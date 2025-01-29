@@ -1,1 +1,1 @@
-# Galaxy_Properties_Evolution
+# Galaxy Properties and Evolution
