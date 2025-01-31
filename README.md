@@ -3,7 +3,7 @@
 ## Introduction
 The goal of this project was to investigate the properties and evolution of galaxies through a series of analyses, with a focus on understanding selection effects, galaxy structure, and the relationships between galaxy properties.
 
-In [the Galaxy Morphology and Evolution project](https://github.com/juliarobe/Galaxy_Morphology_Evolution), I downloaded two samples of 5000 galaxies. The data in the samples contained the apparent magnitudes, scale radii, the axis ratio (a/b), redshift and more. Using this data, I computed the K-correction, the luminosity distance $$ d_L $$, the absolute magnitude $$ M_{abs} $$, the surface brightness $$ \mu $$, and the physical size and for each galaxy.
+In [the Galaxy Morphology and Evolution project](https://github.com/juliarobe/Galaxy_Morphology_Evolution), I downloaded two samples of 5000 galaxies. The data in the samples contained the apparent magnitudes, scale radii, the axis ratio (a/b), redshift and more. Using this data, I computed the K-correction, the luminosity distance, the absolute magnitude, the surface brightness, and the physical size and for each galaxy.
 
 For this project, I build upon my calculations from [the Galaxy Morphology and Evolution project](https://github.com/juliarobe/Galaxy_Morphology_Evolution) by accounting for the galaxies surveys selection effect, which just refers to the biases that arise from the way galaxies are selected for observation in a sample.
 
@@ -27,22 +27,33 @@ These are the steps I took to calculate V-max:
 4. Calculate the volume limit (this is V-max!) using the maximum luminosity distance and the absolute magnitude limit
 
 Now that I have V-max values, I can calculate the weight for each galaxy in the sample.
-$$ weight_i = \frac{1}{V_{max, i}} $$
-$$ weight_{normalized, i} = \frac{weight_i}{\Sigma \frac{1}{V_{max, total}} $$
+
+$$ 
+weight_i = \frac{1}{V_{max, i}} 
+$$
+
+$$ 
+weight_{normalized, i} = \frac{weight_i}{\Sigma \frac{1}{V_{max, total}} 
+$$
 
 ### Refining V-max calculation
 To ensure the accuracy of V-max, I implemented a refinement step using an optimization technique. 
 
 The refinement is based on the equation:
-$$ m_{corrected}^{limit} = 17.5 - K_{corr}(z) + Q*z $$
 
-First, I calculate the absolute magnitude limit $$ M_{lim} $$ using the corrected magnitude limit $$ m_{corrected}^{limit} $$ and the luminosity distance $$ d_L $$, where:
+$$ 
+m_{corrected}^{limit} = 17.5 - K_{corr}(z) + Q*z 
+$$
 
-$$ M_{lim} = m_{corrected}^{limit} - 5log(d_L) - 25 $$
+First, I calculate the absolute magnitude limit $ M_{lim} $ using the corrected magnitude limit $ m_{corrected}^{limit} $ and the luminosity distance $ d_L $, where:
 
-Next, I define a function fit_Q that calculates the volume limit using an interpolation function that takes the absolute magnitude values and finds the closest values in $$ M_{lim} $$ to estimate the corresponding output values in V-max. The estimated output values are returned as $$ V_{lim, fit} $$.
+$$ 
+M_{lim} = m_{corrected}^{limit} - 5log(d_L) - 25 
+$$
 
-The funtion fit_Q calculates the difference between V-max and $$ V_{lim, fit} $$. Then, the value of Q is adjusted to minimize the difference between V-max and $$ V_{lim, fit} $$.
+Next, I define a function fit_Q that calculates the volume limit using an interpolation function that takes the absolute magnitude values and finds the closest values in $ M_{lim} $ to estimate the corresponding output values in V-max. The estimated output values are returned as $ V_{lim, fit} $.
+
+The funtion fit_Q calculates the difference between V-max and $ V_{lim, fit} $. Then, the value of Q is adjusted to minimize the difference between V-max and $ V_{lim, fit} $.
 
 Finally, I use the optimized value of Q to recalculate V_max.
 
@@ -71,17 +82,17 @@ For the following three galaxies, I did the following:
 - Calculated the best-fit radial surface brightness profiles with the non-linear least squares method.
 
 <h2 style="text-align: center;">Galaxy #3 Profiles: </h2>
-<img class="img-fluid" style="display: block; margin: 0 auto;" src="./images/images/gal3_R_vs_mu.png" width="500">
+<img class="img-fluid" style="display: block; margin: 0 auto;" src="./images/gal3_R_vs_mu.png" width="500">
 
 Although the best fit surface brightness profile is difficult to determine by eye, the least squares method tells me that the Sersic fit is the best fit.
 
 <h2 style="text-align: center;">Galaxy #10 Profiles: </h2>
-<img class="img-fluid" style="display: block; margin: 0 auto;" src="./images/images/gal10_R_vs_mu.png" width="500">
+<img class="img-fluid" style="display: block; margin: 0 auto;" src="./images/gal10_R_vs_mu.png" width="500">
 
 For this galaxy, the deVaucouleurs fit looks the closest to the observed data, although none of the profiles fit the data super well. Indeed, the least squares method tells me that the deVaucaoleurs fit is the best.
 
 <h2 style="text-align: center;">Galaxy #14 Profiles: </h2>
-<img class="img-fluid" style="display: block; margin: 0 auto;" src="./images/images/gal14_R_vs_mu.png" width="500">
+<img class="img-fluid" style="display: block; margin: 0 auto;" src="./images/gal14_R_vs_mu.png" width="500">
 
 For this galaxy, it seems like deVaucouleurs fit is the best fit, and the least squares method confirms this.
 
@@ -115,4 +126,4 @@ Finally, I compute the median radius in both the r-band and the g-band in small 
 <h2 style="text-align: center;">Difference of Median Radius vs Evolution Corrected Abs Magnitude: </h2>
 <img class="img-fluid" style="display: block; margin: 0 auto;" src="./images/med_evolcorr_Mr.png" width="500">
 
-The estimate for $$ R_g $$ is slightly higher than that for $$ R_r $$ at several points, indicating a systematic difference between the two bands. This discrepancy arises from the filter effect, where the observed flux in the g-band is affected by the redshift of the galaxies, causing the light to be shifted towards shorter wavelengths. To correct for this effect, a k-correction is necessary to convert the observed magnitudes to their respective rest-frame values. The k-correction involves calculating the flux in the rest-frame and observed-frame, taking into account the telescope’s filter response. By applying this correction, we can obtain a more accurate estimate of the galaxy sizes, unbiased by the effects of redshift. This correction is particularly important when comparing galaxy properties across different redshifts or bands.
+The estimate for $ R_g $ is slightly higher than that for $ R_r $ at several points, indicating a systematic difference between the two bands. This discrepancy arises from the filter effect, where the observed flux in the g-band is affected by the redshift of the galaxies, causing the light to be shifted towards shorter wavelengths. To correct for this effect, a k-correction is necessary to convert the observed magnitudes to their respective rest-frame values. The k-correction involves calculating the flux in the rest-frame and observed-frame, taking into account the telescope’s filter response. By applying this correction, we can obtain a more accurate estimate of the galaxy sizes, unbiased by the effects of redshift. This correction is particularly important when comparing galaxy properties across different redshifts or bands.
