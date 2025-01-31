@@ -32,8 +32,9 @@ $$
 weight_i = \frac{1}{V_{max, i}} 
 $$
 
+
 $$ 
-weight_{normalized, i} = \frac{weight_i}{\Sigma \frac{1}{V_{max, total}} 
+weight_{normalized, i} = \frac{weight_i}{\Sigma \frac{1}{V_{max, total}}} 
 $$
 
 ### Refining V-max calculation
@@ -45,15 +46,15 @@ $$
 m_{corrected}^{limit} = 17.5 - K_{corr}(z) + Q*z 
 $$
 
-First, I calculate the absolute magnitude limit $ M_{lim} $ using the corrected magnitude limit $ m_{corrected}^{limit} $ and the luminosity distance $ d_L $, where:
+First, I calculate the absolute magnitude limit $M_{lim}$ using the corrected magnitude limit $m_{corrected}^{limit}$ and the luminosity distance $d_L$, where:
 
 $$ 
 M_{lim} = m_{corrected}^{limit} - 5log(d_L) - 25 
 $$
 
-Next, I define a function fit_Q that calculates the volume limit using an interpolation function that takes the absolute magnitude values and finds the closest values in $ M_{lim} $ to estimate the corresponding output values in V-max. The estimated output values are returned as $ V_{lim, fit} $.
+Next, I define a function fit_Q that calculates the volume limit using an interpolation function that takes the absolute magnitude values and finds the closest values in $M_{lim}$ to estimate the corresponding output values in V-max. The estimated output values are returned as $V_{lim, fit}$.
 
-The funtion fit_Q calculates the difference between V-max and $ V_{lim, fit} $. Then, the value of Q is adjusted to minimize the difference between V-max and $ V_{lim, fit} $.
+The funtion fit_Q calculates the difference between V-max and $V_{lim, fit}$. Then, the value of Q is adjusted to minimize the difference between V-max and $V_{lim, fit}$.
 
 Finally, I use the optimized value of Q to recalculate V_max.
 
@@ -126,4 +127,4 @@ Finally, I compute the median radius in both the r-band and the g-band in small 
 <h2 style="text-align: center;">Difference of Median Radius vs Evolution Corrected Abs Magnitude: </h2>
 <img class="img-fluid" style="display: block; margin: 0 auto;" src="./images/med_evolcorr_Mr.png" width="500">
 
-The estimate for $ R_g $ is slightly higher than that for $ R_r $ at several points, indicating a systematic difference between the two bands. This discrepancy arises from the filter effect, where the observed flux in the g-band is affected by the redshift of the galaxies, causing the light to be shifted towards shorter wavelengths. To correct for this effect, a k-correction is necessary to convert the observed magnitudes to their respective rest-frame values. The k-correction involves calculating the flux in the rest-frame and observed-frame, taking into account the telescope’s filter response. By applying this correction, we can obtain a more accurate estimate of the galaxy sizes, unbiased by the effects of redshift. This correction is particularly important when comparing galaxy properties across different redshifts or bands.
+The estimate for $R_g$ is slightly higher than that for $R_r$ at several points, indicating a systematic difference between the two bands. This discrepancy arises from the filter effect, where the observed flux in the g-band is affected by the redshift of the galaxies, causing the light to be shifted towards shorter wavelengths. To correct for this effect, a k-correction is necessary to convert the observed magnitudes to their respective rest-frame values. The k-correction involves calculating the flux in the rest-frame and observed-frame, taking into account the telescope’s filter response. By applying this correction, we can obtain a more accurate estimate of the galaxy sizes, unbiased by the effects of redshift. This correction is particularly important when comparing galaxy properties across different redshifts or bands.
